@@ -1,0 +1,7 @@
+*.o
+*.d
+*.map
+OVMF_CODE-*
+OVMF_VARS-*
+kernel.elf
+bootdisk/EFI/BOOT/bootx64.efi
