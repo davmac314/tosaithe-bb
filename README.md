@@ -16,17 +16,36 @@ To build:
 To run (in qemu):
 
 1. build Tosaithe and copy it, or copy a pre-built image, to `bootdisk/EFI/BOOT/BOOTX64.EFI` (i.e.
-   rename it from `tosaithe.efi` to `BOOTX64.EFI`)
-  
-2. first make sure you have the OVMF UEFI firmware files in this directory. You need both
-   `OVMF_CODE-pure-efi.fd` and `OVMF_VARS-pure-efi.fd` files. Currently, You can get suitable
-   pre-built files here:
+   rename it from `tosaithe.efi` to `BOOTX64.EFI`).
+
+   Pre-build images are available from the Tosaithe releases page:
+
+   https://github.com/davmac314/tosaithe/releases
+
+   (Get the file named `tosaithe.efi`, don't forget to rename it and move/copy it to the right location).
+
+2. You will need OVMF (UEFI implementation, part of EDK2) firmware files. These are normally
+   distributed with QEMU. Check the Makefile and change `QEMU_FW_BASEDIR` if necessary, or in case
+   your distribution does not include them, you can get suitable pre-built files here:
 
    https://retrage.github.io/edk2-nightly/
 
-   (eg `RELEASEX64_OVMF_CODE.fd` and `RELEASEX64_OVMF_DATA.fd`, both of which you must rename).
+   (eg `RELEASEX64_OVMF_CODE.fd` and `RELEASEX64_OVMF_DATA.fd`). Note that this is an external
+   link with a separate maintainer, we are not responsible for them and cannot make guarantees
+   of their integrity or suitability. If you prefer, you can build the files yourself; they are
+   part of EDK2:
 
-3. run "make run"
+   https://github.com/tianocore/edk2
+
+   (Build instructions are outside the scope of this document).
+
+   Set the `OVMF_CODE_FILE` and `OVMF_VARS_FILE` variables in the Makefile to the correct
+   locations after downloading or building these files.
+
+3. run with "make run".
+
+   The `bootdisk` directory will be emulated as a FAT filesystem by QEMU. The Tosaithe menu will
+   be displayed with a single menu entry, allowing you to run the "kernel".
 
 The following section briefly explains the code and build process.
 
@@ -94,8 +113,9 @@ Since the headers are part of the segment, we allow for them in setting the firs
     . = SEGMENT_START("text-segment", 0xffffffff80200000) + SIZEOF_HEADERS;
  
 Note that this kernel has a default starting address of `0xffffffff80200000` - that's 2MB past the
-lowest allowed address. That would give us a guaranteed-usable portion of the address space,
-although we don't need that for this example.
+lowest allowed address. That would give us a guaranteed-usable portion of the address space (i.e.
+the kernel might choose to map anything within that 2MB area) although we don't actually need that
+for this example.
 
 The rest just defines the output sections and specifies which segment they are output to. We put
 all code (`.text` sections) and read-only data in the `text` segment, and everything else in the
