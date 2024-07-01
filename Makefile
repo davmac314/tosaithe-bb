@@ -9,6 +9,10 @@ QEMU_FW_BASEDIR = /usr/share/qemu
 OVMF_CODE_FILE := $(QEMU_FW_BASEDIR)/edk2-x86_64-code.fd
 OVMF_VARS_FILE := $(QEMU_FW_BASEDIR)/edk2-i386-vars.fd
 
+# For Debian/Ubuntu, install "ovmf" package and use the following:
+#OVMF_CODE_FILE := /usr/share/OVMF/OVMF_CODE_4M.fd
+#OVMF_VARS_FILE := /usr/share/OVMF/OVMF_VARS_4M.fd
+
 all: kernel.elf
 
 KERNEL_OBJECTS=kernel.o

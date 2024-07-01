@@ -25,8 +25,9 @@ To run (in qemu):
    (Get the file named `tosaithe.efi`, don't forget to rename it and move/copy it to the right location).
 
 2. You will need OVMF (UEFI implementation, part of EDK2) firmware files. These are normally
-   distributed with QEMU. Check the Makefile and change `QEMU_FW_BASEDIR` if necessary, or in case
-   your distribution does not include them, you can get suitable pre-built files here:
+   distributed with QEMU, or some distributions as part of the "ovmf" package. Check the Makefile
+   and change `QEMU_FW_BASEDIR` (or `OVMF_CODE_FILE` and `OVMF_VARS_FILE`) if necessary, or in
+   case your distribution does not include them, you can get suitable pre-built files here:
 
    https://retrage.github.io/edk2-nightly/
 
